@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulaire de sondage</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
+  <style>
+    body {
+      margin: 0;
+      margin-top: 60px;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 18px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      height: calc(1.5em + 0.75rem + 2px);
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn {
+      display: inline-block;
+      font-weight: 400;
+      color: #212529;
+      text-align: center;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+
+  </style>
+  <script>
+    function validateForm() {
+      var desc = document.forms["sondageForm"]["description"].value;
+      var question = document.forms["sondageForm"]["question"].value;
+      var createur = document.forms["sondageForm"]["createur"].value;
+      var dateCloture = document.forms["sondageForm"]["dateCloture"].value;
+      var today = new Date();
+
+      if (desc == "" || desc.trim().length < 3 || desc.trim().length > 120) {
+        alert("La description doit contenir entre 3 et 120 caractères.");
+        return false;
+      }
+
+      if (question.trim().length > 120) {
+        alert("La question ne doit pas dépasser 120 caractères.");
+        return false;
+      }
+
+      if (createur.trim().length > 64) {
+        alert("Le nom du créateur ne doit pas dépasser 64 caractères.");
+        return false;
+      }
+
+      if (new Date(dateCloture) <= today) {
+        alert("La date de clôture doit être postérieure à la date du jour.");
+        return false;
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>Formulaire de sondage</h1>
+
+<form name="sondageForm" onsubmit="return validateForm()" th:object="${oxo}" th:action="@{/oxos/form/add}" method="post">
+  <input type="hidden" th:field="*{id}"/>
+  <p>
+    <label>Description:</label><br>
+    <input type="text" th:field="*{description}" class="input-large" required>
+  </p>
+  <p>
+    <label>Question:</label><br>
+    <textarea th:field="*{question}" class="input-large" maxlength="120"></textarea>
+  </p>
+  <p>
+    <label>Date de clôture:</label><br>
+    <input type="date" th:field="*{dateCloture}" class="input-small" required>
+  </p>
+  <p>
+    <label>Créateur:</label><br>
+    <input type="text" th:field="*{createur}" class="input-large" maxlength="64" required>
+  </p>
+  <p>
+    <button type="submit" class="button">Enregistrer</button>
+  </p>
+</form>
+
+<a th:href="@{/}" class="back-link">&larr; Retour à la liste</a>
+
+
+</body>
+</html>

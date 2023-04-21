@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des sondages</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
+  <style>
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      font-size: 1em;
+      font-family: sans-serif;
+      min-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    th {
+      background-color: #3F51B5;
+      color: #fff;
+      font-weight: bold;
+      padding: 12px 15px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    td {
+      border-bottom: 1px solid #f2f2f2;
+      color: #4e4e4e;
+      padding: 12px 15px;
+    }
+
+
+    .add {
+      background-color: #3F51B5;
+      border-radius: 4px;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 20px auto;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .add:hover {
+      background-color: #78b5d1;
+    }
+
+
+  </style>
+</head>
+<body>
+<h1>Liste des sondages</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Description</th>
+    <th>Question</th>
+    <th>Date de clôture</th>
+    <th>Créateur</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="oxo : ${oxos}">
+    <td th:text="${oxo.description}"></td>
+    <td th:text="${oxo.question}"></td>
+    <td th:text="${oxo.dateCloture}"></td>
+    <td th:text="${oxo.createur}"></td>
+    <td>
+      <a th:href="@{/oxos/{id}(id=${oxo.id})}">Voir</a> |
+      <a th:href="@{/oxos/maj/{id}(id=${oxo.id})}">Modifier</a> |
+      <a th:href="@{/oxos/del/{id}(id=${oxo.id})}">Supprimer</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<a class="add" th:href="@{/oxos/form/add}">Ajouter un sondage</a>
+</body>
+</html>
